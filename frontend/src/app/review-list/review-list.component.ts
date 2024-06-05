@@ -20,6 +20,7 @@ export class ReviewListComponent {
     this.apiService.getReviews().subscribe((res)=>{
       this.reviews = res;
     })
+    this.apiService.loadReviews();
 
   }
 

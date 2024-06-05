@@ -3,14 +3,20 @@ const bodyParser = require('body-parser');
 const dbConfig = require('./config');
 const mongoose = require('mongoose');
 const socketIo = require('socket.io');
-const ReviewRoute = require('./routes/review')
+const reviewRoutes = require('./routes/review')
 const http = require('http');
 const cors = require('cors');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+app.use(cors());
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 
 mongoose.Promise = global.Promise;
 mongoose.connect(dbConfig.url, {
@@ -22,14 +28,16 @@ mongoose.connect(dbConfig.url, {
     process.exit();
 });
 
-app.use(cors());
+
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-app.use('/0',ReviewRoute)
-app.use('/', ReviewRoute)
-app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
+
+app.use('/', reviewRoutes(io))
+
+
+server.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
 });
 
 io.on('connection', (socket) => {
@@ -38,8 +46,4 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
 });

@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Review = require('../models/review');
 
+module.exports = (io) => {
 // Create a new review
 router.post('/', async (req, res) => {
   const { title, content, user } = req.body;
     try {
         const newReview = new Review({ title, user, content });
         await newReview.save();
+        io.emit('reviewAdded', newReview);
         res.status(201).json(newReview);
     } catch (err) {
         res.status(400).json({ message: err.message });
@@ -69,4 +71,6 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-module.exports = router;
+return router;
+}
+
