@@ -18,10 +18,18 @@ export class ReviewListComponent {
 
   ngOnInit() {
     this.apiService.getReviews().subscribe((res)=>{
-      this.reviews = res;
+      this.mergeReviews(res);
     })
     this.apiService.loadReviews();
 
+  }
+
+  mergeReviews(newReviews: any[]): void {
+    console.log(newReviews)
+    const reviewMap = new Map(this.reviews.map(review => [review._id, review]));
+    newReviews.forEach(review => reviewMap.set(review._id, review));
+    this.reviews = Array.from(reviewMap.values());
+    this.reviews.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }
 
   deleteReview(id: any) {

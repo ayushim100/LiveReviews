@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
     try {
         const newReview = new Review({ title, user, content });
         await newReview.save();
-        io.emit('reviewAdded', newReview);
+        io.emit('reviewAdded', [newReview]);
         res.status(201).json(newReview);
     } catch (err) {
         res.status(400).json({ message: err.message });
