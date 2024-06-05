@@ -41,17 +41,20 @@ router.get('/:id', async (req, res) => {
 
 // Update a review
 router.put('/:id', async (req, res) => {
-    const { user, text, rating } = req.body;
+    const { title, content, date } = req.body;
     try {
       const review = await Review.findById(req.params.id);
       if (!review) {
         return res.status(404).json({ message: 'Review not found' });
       }
-      review.user = user || review.user;
-      review.text = text || review.text;
-      review.rating = rating || review.rating;
+      review.title = title;
+      review.content = content;
       await review.save();
-      res.status(200).json(review);
+      const reviews = await Review.find();
+      
+      io.emit('review', reviews);
+
+      //res.status(200).json(review);
     } catch (err) {
       res.status(400).json({ message: err.message });
     }

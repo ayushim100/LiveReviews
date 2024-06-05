@@ -40,7 +40,9 @@ export class ApiService {
     }
 
     updateReview(id: any, data: any) {
-
+        this.http.put<any[]>('http://localhost:3001/'+id, data).subscribe(res => {
+            console.log(res);
+        })
     }
 
     deleteReview(id: any): void {
