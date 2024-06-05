@@ -36,7 +36,9 @@ export class ApiService {
     }
 
     addReview(data: any) {
-
+        this.http.post<any>('http://localhost:3001/', data).subscribe(res => {
+            console.log(res);
+        })
     }
 
     updateReview(id: any, data: any) {

@@ -9,8 +9,9 @@ router.post('/', async (req, res) => {
     try {
         const newReview = new Review({ title, user, content });
         await newReview.save();
-        io.emit('reviewAdded', [newReview]);
-        res.status(201).json(newReview);
+        const reviews = await Review.find();
+        io.emit('review', reviews);
+        //res.status(201).json(newReview);
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
@@ -20,6 +21,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
       const reviews = await Review.find();
+      io.emit('review', reviews);
       res.status(200).json(reviews);
     } catch (err) {
       res.status(500).json({ message: err.message });
