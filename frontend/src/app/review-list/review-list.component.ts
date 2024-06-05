@@ -18,7 +18,8 @@ export class ReviewListComponent {
 
   ngOnInit() {
     this.apiService.getReviews().subscribe((res)=>{
-      this.mergeReviews(res);
+      console.log("getReviews")
+      this.reviews = res;
     })
     this.apiService.loadReviews();
 
@@ -33,6 +34,7 @@ export class ReviewListComponent {
   }
 
   deleteReview(id: any) {
-
+    console.log(id);
+    this.apiService.deleteReview(id)
   }
 }

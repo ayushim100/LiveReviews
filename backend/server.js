@@ -40,6 +40,7 @@ server.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
+let reviews = [];
 io.on('connection', (socket) => {
   console.log('New client connected');
 

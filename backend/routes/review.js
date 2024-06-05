@@ -65,7 +65,10 @@ router.delete('/:id', async (req, res) => {
         return res.status(404).json({ message: 'Review not found' });
       }
       await review.deleteOne();
-      res.status(200).json({ message: 'Review deleted' });
+      const reviews = await Review.find();
+
+      io.emit('review', reviews); 
+      //res.status(200).json({ message: 'Review deleted' });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }

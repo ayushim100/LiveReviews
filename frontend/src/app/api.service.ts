@@ -16,7 +16,11 @@ export class ApiService {
         this.socket.on('reviewAdded', (data: any) => {
             this.reviewsSubject.next(data);
         });
+        this.socket.on('review', (data: any) => {
+            this.reviewsSubject.next(data);
+        })
     } 
+
     getReviews(): Observable<any[]> {
         return this.reviewsSubject.asObservable();
     }
@@ -24,6 +28,12 @@ export class ApiService {
     loadReviews(): void {
         this.http.get<any[]>('http://localhost:3001/').subscribe(reviews => {
           this.reviewsSubject.next(reviews);
+        });
+    }
+
+    deleteReview(id: any): void {
+        this.http.delete<any[]>('http://localhost:3001/'+id).subscribe(res => {
+            console.log(res);
         });
     }
 }
