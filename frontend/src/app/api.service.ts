@@ -31,6 +31,18 @@ export class ApiService {
         });
     }
 
+    getReviewById(id: any): Observable<any> {
+        return this.http.get<any>('http://localhost:3001/'+id);
+    }
+
+    addReview(data: any) {
+
+    }
+
+    updateReview(id: any, data: any) {
+
+    }
+
     deleteReview(id: any): void {
         this.http.delete<any[]>('http://localhost:3001/'+id).subscribe(res => {
             console.log(res);

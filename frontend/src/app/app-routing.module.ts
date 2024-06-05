@@ -15,6 +15,13 @@ const routes: Routes = [
     },
     component: ReviewComponent,
   },
+  {
+    path: ":id",
+    data: {
+      title: "New",
+    },
+    component: ReviewComponent,
+  },
 
 ];
 
